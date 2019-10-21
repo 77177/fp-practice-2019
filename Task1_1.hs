@@ -9,12 +9,22 @@ data Term = IntConstant{ intValue :: Int }           -- числовая кон�
 
 -- Для бинарных операций необходима не только реализация, но и адекватные
 -- ассоциативность и приоритет
+remove :: String -> String -> String
+remove l r = [x | x <- l, y <- r, x == y]
+
 (|+|) :: Term -> Term -> Term
-(|+|) l r = todo
+(|+|) (IntConstant l) (IntConstant r) = IntConstant (l + r)
+(|+|) (Variable l) (Variable r) = Variable (l ++ r)
+(|+|) (BinaryTerm l m) (BinaryTerm r n) = BinaryTerm ((|+|) (l) (r))((|+|) (m) (n))
+
 (|-|) :: Term -> Term -> Term
-(|-|) l r = todo
+(|-|) (IntConstant l) (IntConstant r) = IntConstant (l + r)
+(|-|) (Variable l) (Variable r) = Variable (remove l r)
+(|-|) (BinaryTerm l m) (BinaryTerm r n) = BinaryTerm ((|-|) (l) (r))((|-|) (m) (n))
+
 (|*|) :: Term -> Term -> Term
-(|*|) l r = todo
+(|*|) (IntConstant l) (IntConstant r) = IntConstant (l * r)
+
 
 -- Заменить переменную `varName` на `replacement`
 -- во всём выражении `expression`
@@ -25,3 +35,4 @@ replaceVar varName replacement expression = todo
 -- если оно состоит только из констант
 evaluate :: Term -> Term
 evaluate expression = todo
+
