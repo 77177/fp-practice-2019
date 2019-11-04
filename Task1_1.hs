@@ -28,10 +28,12 @@ data Term = IntConstant{ intValue :: Int }           -- числовая кон�
 -- Заменить переменную `varName` на `replacement`
 -- во всём выражении `expression`
 replaceVar :: String -> Term -> Term -> Term
-replaceVar varName replacement expression = todo
+replaceVar varName replacement expression = case expression of
+                            IntConstant _ -> IntConstant (intValue replacement)
 
 -- Посчитать значение выражения `Term`
 -- если оно состоит только из констант
 evaluate :: Term -> Term
-evaluate expression = todo
+evaluate expression = case expression of
+            IntConstant _ -> IntConstant (intValue expression)
 
