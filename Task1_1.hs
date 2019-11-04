@@ -9,21 +9,20 @@ data Term = IntConstant{ intValue :: Int }           -- числовая кон�
 
 -- Для бинарных операций необходима не только реализация, но и адекватные
 -- ассоциативность и приоритет
-remove :: String -> String -> String
-remove l r = [x | x <- l, y <- r, x == y]
+
+
 
 (|+|) :: Term -> Term -> Term
-(|+|) (IntConstant l) (IntConstant r) = IntConstant (l + r)
-(|+|) (Variable l) (Variable r) = Variable (l ++ r)
-(|+|) (BinaryTerm l m) (BinaryTerm r n) = BinaryTerm ((|+|) (l) (r))((|+|) (m) (n))
-
+(|+|) l r = case l of
+        IntConstant _ -> IntConstant (intValue l + intValue r)
+        Variable _ -> Variable ((varName l) ++ (varName r))
+        BinaryTerm _ _ -> BinaryTerm ((|+|) (lhv l) (rhv l)) ((|+|) (lhv r) (rhv r))
 (|-|) :: Term -> Term -> Term
-(|-|) (IntConstant l) (IntConstant r) = IntConstant (l + r)
-(|-|) (Variable l) (Variable r) = Variable (remove l r)
-(|-|) (BinaryTerm l m) (BinaryTerm r n) = BinaryTerm ((|-|) (l) (r))((|-|) (m) (n))
-
+(|-|) l r = case l of
+        IntConstant _ -> IntConstant (intValue l - intValue r)
 (|*|) :: Term -> Term -> Term
-(|*|) (IntConstant l) (IntConstant r) = IntConstant (l * r)
+(|*|) l r = case l of
+        IntConstant _ -> IntConstant (intValue l * intValue r)
 
 
 -- Заменить переменную `varName` на `replacement`
