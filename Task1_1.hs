@@ -1,5 +1,10 @@
 module Task1_1 where
 
+{-
+  Задание 1.1
+  Необходимо реализовать все операции, описанные в данном файле
+-}
+
 import Todo(todo)
 
 data Term = IntConstant{ intValue :: Int }           -- числовая константа
