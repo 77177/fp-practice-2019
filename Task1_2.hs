@@ -13,12 +13,7 @@ sin x = todo
 
 -- косинус числа (формула Тейлора)
 cos :: Double -> Double
-fac :: Int -> Int
-fac n = if (n == 0) then 1 else n * fac (n-1)
-
-cos x = sum [cos | k <- [0..],
-                  let cos = (-1) * (x^(2*k) / fromIntegral (fac (2*k))) ,
-                  abs (cos) > 0.001]
+cos x = todo
 
 -- наибольший общий делитель двух чисел
 gcd :: Integer -> Integer -> Integer
