@@ -47,9 +47,9 @@ infixl 2 |*|
 replaceVar :: String -> Term -> Term -> Term
 replaceVar varName replacement expression =
         case expression of
-            IntConstant i -> IntConstant i
             BinaryTerm leftTerm operation rightTerm -> BinaryTerm (replaceVar (varName) (replacement) (lhv)) (op) (replaceVar (varName) (replacement) (rhv))
             Variable v -> if(v == varName) then replacement else expression
+            IntConstant i -> IntConstant i
 
 
 -- Посчитать значение выражения `Term`
