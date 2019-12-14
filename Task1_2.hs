@@ -41,9 +41,10 @@ pow x y = if y /= 1 then x * pow (x) (y-1) else x
 -- является ли данное число простым?
 isPrime :: Integer -> Bool
 
-isPrime 1 = False
-isPrime 2 = True
-isPrime x = if (length [y | y <- [2 .. x-1], mod x y == 0]) > 0 then False else True
+isPrime x = case x of
+        1 -> False
+        2 -> True
+        x -> if (length [y | y <- [2 .. x-1], mod x y == 0]) > 0 then False else True
 
 
 type Point2D = (Double, Double)
