@@ -17,13 +17,7 @@ cos x = todo
 
 -- наибольший общий делитель двух чисел
 gcd :: Integer -> Integer -> Integer
-gcd x y
-        | (x == y) = x
-        | (x /= y) =
-            gcd (theBiggerInt - theSmallerInt) theSmallerInt
-                where
-                theBiggerInt = max x y
-                theSmallerInt = min x y
+gcd x y = if (x == y) then x else gcd (max (x) (y) - min (x) (y)) min (x) (y)
 
 -- существует ли полный целочисленный квадрат в диапазоне [from, to)?
 doesSquareBetweenExist :: Integer -> Integer -> Bool
