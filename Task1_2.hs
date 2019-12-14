@@ -32,38 +32,20 @@ doesSquareBetweenExist from to = todo
 -- является ли дата корректной с учётом количества дней в месяце и
 -- вискокосных годов?
 isDateCorrect :: Integer -> Integer -> Integer -> Bool
-isDateCorrect day month year
-                             | day <= 0 ||day > 31|| month <= 0 || month > 12 || year <=0 =False
-                             | day <= numDays !! fromIntegral month = True
-                             | month == 2 || day <= 28 = True
-                             | month == 2 || day == 29 = checkFeb year
-                             | otherwise = False
-    where
-        checkFeb year = if mod year 4 == 0 then True else False
-        numDays = [0 ,31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+isDateCorrect day month year = todo
+
 -- возведение числа в степень, duh
 -- готовые функции и плавающую арифметику использовать нельзя
 pow :: Integer -> Integer -> Integer
-pow x y
-        | y == 0 = 1
-        | x == 1 || x == 0 || y == 1 = x
-        | y < 0 = error "Incorrect variable y"
-        | otherwise = power x x y
-            where
-                power x mn y   | y == 1 = x
-                             | otherwise = power (x * mn) mn (y - 1)
+pow x y = if y /= 1 then x * pow (x) (y-1) else x
 
 -- является ли данное число простым?
 isPrime :: Integer -> Bool
-isPrime x =
-            let n = 2 in
-                if mod x n == 0 then False else isPrime' x $ n+1
-               where
-                   isPrime' x n
-                            | x == 1 = True
-                            | x == n = True
-                            | mod x n == 0 = False
-                            | otherwise = isPrime' x $ n+1
+
+isPrime 1 = False
+isPrime 2 = True
+isPrime x = if (length [y | y <- [2 .. x-1], mod x y == 0]) > 0 then False else True
+
 
 type Point2D = (Double, Double)
 
