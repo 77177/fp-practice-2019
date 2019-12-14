@@ -7,7 +7,7 @@ module Task1_1 where
 
 import Todo(todo)
 
-data Operation = Addition | Subtraction | Multipication deriving (Show, Eq)
+data Operation = Addition | Subtraction | Multiplication deriving (Show, Eq)
 
 data Term = IntConstant{ intValue :: Int }           -- числовая константа
             | Variable{ varName :: String }          -- переменная
@@ -26,7 +26,6 @@ remove l r = [x | x <- l, y <- r, x == y]
 (|+|) (Variable l) (Variable r) = Variable (l ++ r)
 (|+|) l r = BinaryTerm l Addition r
 
-
 (|-|) :: Term -> Term -> Term
 (|-|) (IntConstant l) (IntConstant r) = IntConstant (l + r)
 (|-|) (Variable l) (Variable r) = Variable (remove l r)
@@ -34,18 +33,18 @@ remove l r = [x | x <- l, y <- r, x == y]
 
 (|*|) :: Term -> Term -> Term
 (|*|) (IntConstant l) (IntConstant r) = IntConstant (l * r)
-(|*|) l r = BinaryTerm l Multipication r
+(|*|) l r = BinaryTerm l Multiplication r
 
-infixl 1 |+|
-infixl 1 |-|
-infixl 2 |*|
+infixl 6 |+|
+infixl 6 |-|
+infixl 7 |*|
 
 --Заменить переменную `varName` на `replacement`
 -- во всём выражении `expression`
 replaceVar :: String -> Term -> Term -> Term
 replaceVar varName replacement expression =
         case expression of
-            BinaryTerm leftTerm operation rightTerm -> BinaryTerm (replaceVar (varName) (replacement) (lhv)) (op) (replaceVar (varName) (replacement) (rhv))
+            BinaryTerm lhv op rhv -> BinaryTerm (replaceVar (varName) (replacement) (lhv)) (op) (replaceVar (varName) (replacement) (rhv))
             Variable v -> if(v == varName) then replacement else expression
             IntConstant i -> IntConstant i
 
@@ -53,12 +52,10 @@ replaceVar varName replacement expression =
 -- Посчитать значение выражения `Term`
 -- если оно состоит только из констант
 evaluate :: Term -> Term
-evaluate expression =
-    case expression of
-        BinaryTerm leftTerm operation rightTerm ->
-            case (evaluate lhv, op, evaluate rhv ) of
-                (IntConstant lhv, Addition, IntConstant rhv) -> IntConstant (lhv |+| rhv)
-                (IntConstant lhv, Subtraction, IntConstant rhv) -> IntConstant (lhv |-| rhv)
-                (IntConstant lhv, Multipication, IntConstant rhv) -> IntConstant (lhv |*| rhv)
-                _ -> BinaryTerm leftTerm operation rightTerm
+evaluate expression = case expression of
+        BinaryTerm lhv op rhv -> case (evaluate lhv, op, evaluate rhv ) of
+                ((IntConstant (x)), (Addition), (IntConstant (y))) -> (lhv |+| rhv)
+                ((IntConstant (x)), (Subtraction), (IntConstant (y))) -> lhv |-| rhv
+                ((IntConstant (x)), (Multiplication), (IntConstant (y))) -> lhv |*| rhv
+                _ -> BinaryTerm lhv op rhv
         _-> expression
