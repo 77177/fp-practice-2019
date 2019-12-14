@@ -17,11 +17,16 @@ cos x = todo
 
 -- наибольший общий делитель двух чисел
 gcd :: Integer -> Integer -> Integer
-gcd x y = if (x == y) then x else gcd (max (x) (y) - min (x) (y)) min (x) (y)
+gcd x y = if (x == y) then x else gcd (max (x) (y) - min (x) (y)) (min (x) (y))
 
 -- существует ли полный целочисленный квадрат в диапазоне [from, to)?
 doesSquareBetweenExist :: Integer -> Integer -> Bool
-doesSquareBetweenExist from to = todo
+getBool::Integer -> Double -> Bool
+
+getBool a b = if ((sqrt(fromIntegral a)) - fromIntegral(floor(sqrt(fromIntegral a))) == 0) then True else False
+isFullSquare:: Integer -> Bool
+isFullSquare x = getBool x $ fromIntegral $ floor $ sqrt $ fromIntegral $ x
+doesSquareBetweenExist from to = foldr (||) False $ map (\x -> isFullSquare x) $ init [from..to]
 
 -- является ли дата корректной с учётом количества дней в месяце и
 -- вискокосных годов?
