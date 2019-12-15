@@ -44,18 +44,22 @@ infixl 7 |*|
 replaceVar :: String -> Term -> Term -> Term
 replaceVar varName replacement expression =
         case expression of
-            BinaryTerm lhv op rhv -> BinaryTerm (replaceVar (varName) (replacement) (lhv)) (op) (replaceVar (varName) (replacement) (rhv))
+            BinaryTerm leftTerm operation rightTerm -> BinaryTerm (replaceVar (varName) (replacement) (leftTerm)) (operation) (replaceVar (varName) (replacement) (rightTerm))
             Variable v -> if(v == varName) then replacement else expression
             IntConstant i -> IntConstant i
+
 
 
 -- Посчитать значение выражения `Term`
 -- если оно состоит только из констант
 evaluate :: Term -> Term
+
+evalBinaryTerm leftTerm operation rightTerm = case (evaluate leftTerm, operation, evaluate rightTerm ) of
+                                 ((IntConstant (x)), (Addition), (IntConstant (y))) -> (leftTerm |+| rightTerm)
+                                 ((IntConstant (x)), (Subtraction), (IntConstant (y))) -> leftTerm |-| rightTerm
+                                 ((IntConstant (x)), (Multiplication), (IntConstant (y))) -> leftTerm |*| rightTerm
+                                 _ -> BinaryTerm leftTerm operation rightTerm
+
 evaluate expression = case expression of
-        BinaryTerm lhv op rhv -> case (evaluate lhv, op, evaluate rhv ) of
-                ((IntConstant (x)), (Addition), (IntConstant (y))) -> (lhv |+| rhv)
-                ((IntConstant (x)), (Subtraction), (IntConstant (y))) -> lhv |-| rhv
-                ((IntConstant (x)), (Multiplication), (IntConstant (y))) -> lhv |*| rhv
-                _ -> BinaryTerm lhv op rhv
+        BinaryTerm leftTerm operation rightTerm -> evalBinaryTerm leftTerm operation rightTerm
         _-> expression
