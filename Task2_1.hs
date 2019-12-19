@@ -13,7 +13,7 @@ import Todo(todo)
 -- Ключи - Integer, значения - произвольного типа
 data TreeMap v = Empty | Node (Integer, v) (TreeMap v) (TreeMap v) deriving (Show, Eq, Read)
 
-testTree = (Node (100,"100")(Node (50,"50")(Empty)(Empty))(Node (150,"150")(Node (125,"125")(Empty)(Empty))(Node (175,"175")(Empty)(Empty))))
+treeForTesting = (Node (100,"100")(Node (50,"50")(Empty)(Empty))(Node (150,"150")(Node (125,"125")(Empty)(Empty))(Node (175,"175")(Empty)(Empty))))
 
 -- Пустое дерево
 emptyTree :: TreeMap v
@@ -100,7 +100,7 @@ treeSize :: TreeMap v -> Integer
 treeSize Empty = 0
 treeSize t = case t of
                       Empty -> 0
-                      (Node _ left right ) -> (treeSize left) + 1 + (treeSize right)
+                      (Node _ left right ) ->  1 + (treeSize left) + (treeSize right)
 
 kMean :: Integer -> TreeMap v -> (Integer, v)
 kMean i t = case (i, t) of
