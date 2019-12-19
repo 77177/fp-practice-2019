@@ -13,7 +13,7 @@ import Todo(todo)
 -- Ключи - Integer, значения - произвольного типа
 data TreeMap v = Empty | Node (Integer, v) (TreeMap v) (TreeMap v) deriving (Show, Eq, Read)
 
-testTree = (Node (100,"100")(Node (50,"50")(Empty)(Empty))(Node (150,"150")(Empty)(Empty)))
+testTree = (Node (100,"100")(Node (50,"50")(Empty)(Empty))(Node (150,"150")(Node (125,"125")(Empty)(Empty))(Node (175,"175")(Empty)(Empty))))
 
 -- Пустое дерево
 emptyTree :: TreeMap v
@@ -44,11 +44,25 @@ insert (k, v) (Node (key, value) leftTree rightTree) =
 
 -- Удаление элемента по ключу
 remove :: Integer -> TreeMap v -> TreeMap v
-remove _ Empty = error "Element doesn't exist"
-remove k (Node (key, value) leftTree rightTree) =
-                                                    if k == key then Empty else
-                                                    if k < key then Node (key, value) (remove k leftTree) rightTree else Node (key, value) leftTree (remove k rightTree)
 
+filterOutElement list = [x | x <- list]
+
+minKey (Node (k,v) Empty _) = k
+minKey (Node _ l _) = minKey l
+
+construct left right = case (left, right) of
+                                            (Empty, Empty)-> Empty
+                                            (left, Empty)-> left
+                                            (Empty, right)-> right
+                                            (left, right)-> Node (nkey, nvalue) left nright
+                                                            where nkey = minKey right
+                                                                  nright = remove nkey right
+                                                                  nvalue = lookup nkey right
+
+remove _ Empty = error "Element doesn't exist"
+remove k (Node (key, value) leftTree rightTree) |  k < key = Node (key, value) (remove k leftTree) rightTree
+                                                |  k > key = Node (key, value) leftTree (remove k rightTree)
+                                                |  k == key = construct leftTree rightTree
 
 
 -- Поиск ближайшего снизу ключа относительно заданного
