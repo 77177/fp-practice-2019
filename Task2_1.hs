@@ -13,7 +13,7 @@ import Todo(todo)
 -- Ключи - Integer, значения - произвольного типа
 data TreeMap v = Empty | Node (Integer, v) (TreeMap v) (TreeMap v) deriving (Show, Eq, Read)
 
-
+testTree = (Node (100,"100")(Node (50,"50")(Empty)(Empty))(Node (150,"150")(Empty)(Empty)))
 
 -- Пустое дерево
 emptyTree :: TreeMap v
@@ -44,7 +44,11 @@ insert (k, v) (Node (key, value) leftTree rightTree) =
 
 -- Удаление элемента по ключу
 remove :: Integer -> TreeMap v -> TreeMap v
-remove k t = todo
+remove _ Empty = error "Element doesn't exist"
+remove k (Node (key, value) leftTree rightTree) =
+                                                    if k == key then Empty else
+                                                    if k < key then Node (key, value) (remove k leftTree) rightTree else Node (key, value) leftTree (remove k rightTree)
+
 
 
 -- Поиск ближайшего снизу ключа относительно заданного
