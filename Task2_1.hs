@@ -47,15 +47,15 @@ remove :: Integer -> TreeMap v -> TreeMap v
 
 filterOutElement list = [x | x <- list]
 
-minKey (Node (k,v) Empty _) = k
-minKey (Node _ l _) = minKey l
+getMinimalKey (Node (k,v) Empty _) = k
+getMinimalKey (Node _ l _) = getMinimalKey l
 
 construct left right = case (left, right) of
                                             (Empty, Empty)-> Empty
                                             (left, Empty)-> left
                                             (Empty, right)-> right
                                             (left, right)-> Node (nkey, nvalue) left nright
-                                                            where nkey = minKey right
+                                                            where nkey = getMinimalKey right
                                                                   nright = remove nkey right
                                                                   nvalue = lookup nkey right
 
