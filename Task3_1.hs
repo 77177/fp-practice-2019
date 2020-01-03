@@ -52,7 +52,6 @@ instance Num WeirdPeanoNumber where
     abs peanoNum = if ((peanoToInteger peanoNum) < 0)  then (peanoFromInteger (negate (peanoToInteger peanoNum))) else (peanoNum)
 
     fromInteger   = peanoFromInteger
-
     (*) peanoNum1 peanoNum2 = case (signum peanoNum2) of
                                 Succ Zero -> peanoNum1 + (peanoNum1 * Pred peanoNum2)
                                 Pred Zero -> negate (peanoNum1 * abs peanoNum2)
