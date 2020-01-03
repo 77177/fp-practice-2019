@@ -1,4 +1,4 @@
-module Todo(todo) where
+module  Todo(todo) where
 
 import Control.Exception
 
