@@ -16,7 +16,6 @@ newtype PSet a = PSet{ contains :: (a -> Bool) }
 --     mempty `mappend` x = x
 --     x `mappend` mempty = x
 
-
 --  порядок выполнения mappend не дожен быть важен
 --     (x `mappend` y) `mappend` z = x `mappend` (y `mappend` z)
 
