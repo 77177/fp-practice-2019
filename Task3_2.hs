@@ -31,7 +31,6 @@ instance (Show a) => Show (ReverseList a) where
                         (RCons rlist element) -> show element ++ " " ++ show rlist
 
 instance (Eq a) => Eq (ReverseList a) where
-
     (==) leftList rightList = (rlistToList leftList) == (rlistToList rightList)
 
 instance (Ord a) => Ord (ReverseList a) where
