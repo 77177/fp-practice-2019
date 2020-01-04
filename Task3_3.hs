@@ -38,8 +38,8 @@ instance Monoid (PSet a) where
 -- Стандратная реализация fmap состоит в
 -- получении контейнера со значением -> распаковка контейнера и добыча значения -> примение к значению функции -> запаковака значения обратно в контейнер
 
-instance Functor (PSet) where
-    fmap func (PSet predicate) = PSet (func predicate)
+-- instance Functor (PSet) where
+--     fmap func (PSet predicate) = PSet (func predicate)
 
 -- Данный функтор не является рабочим ввиду того, что в декларации fmap  (fmap :: (a -> b) -> PSet a -> PSet b)
 -- параметр 'a' не связывается с типом предиката и выкидывет ошибку.
