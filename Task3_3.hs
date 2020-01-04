@@ -42,9 +42,10 @@ instance Functor (PSet) where
     fmap func (PSet predicate) = PSet (func predicate)
 
 -- Данный функтор не является рабочим ввиду того, что в декларации fmap  (fmap :: (a -> b) -> PSet a -> PSet b)
--- параметр 'a' свзяывается не связывается с типом предиката и выкидывет ошибку.
+-- параметр 'a' не связывается с типом предиката и выкидывет ошибку.
 --
 -- Couldn't match expected type ‘a’ with actual type ‘a -> Bool’
 -- ‘a’ is a rigid type variable bound by
 -- the type signature
+
 
