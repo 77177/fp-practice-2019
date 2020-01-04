@@ -46,10 +46,10 @@ instance Functor FunMonad where
 
 --    законы аппликативного функора
 
--- pure id <*> v = v
--- pure f <*> pure x = pure (f x)
--- u <*> pure y = pure ($ y) <*> u
--- pure (.) <*> u <*> v <*> w = u <*> (v <*> w)
+-- pure id <*> v = v                                pure id в функции <*> не меняет второй аргумент и ответ равен другому неизменному аргументу.
+-- pure f <*> pure x = pure (f x)                   pure в обоих параметорах функции .<*> равено pure с последовательно примененными значениями
+-- u <*> pure y = pure ($ y) <*> u                  можно взаимозаменять pure (...) и другие монады
+-- pure (.) <*> u <*> v <*> w = u <*> (v <*> w)     в контексте монад можно композировать функции с помощью (.)
 
 instance Applicative FunMonad where
     pure func = FunMonad (\arg -> func)
