@@ -7,6 +7,22 @@ import Todo(todo)
 data Zipper a = Zipper [a] [a]
 
 -- Реализуйте экземпляры классов Show и Eq для этого типа
+instance (Show a) => Show (Zipper a) where
+  show (Zipper left right) = "Zipper " ++ (show left) ++ " " ++ (show right)
+
+test1 = Zipper [2,1] [3,4]
+test2 = Zipper [6,5] [7,8]
+
+helper :: Zipper a -> [a]
+helper (Zipper [] full) = full
+
+toList :: Zipper a -> [a]
+toList zipper = helper (goLeftToTheEnd zipper)
+
+instance (Eq a) => Eq (Zipper a) where
+  (==) zipper1 zipper2 = (toList zipper1) == (toList zipper2)
+
+
 
 fromList :: [a] -> Zipper a
 fromList lst = Zipper [] lst
@@ -34,11 +50,23 @@ removeLeft (Zipper (_:lt) r) = Zipper lt r
 -- Используя приведённые выше функции, реализуйте функцию конкатенации
 -- вставки подсписка в середину и выделения подсписка
 
-concat :: Zipper a -> Zipper a -> Zipper a
-concat left right = todo
+concatZipper :: Zipper a -> Zipper a -> Zipper a
+concatZipper (Zipper (l1) (r1)) (Zipper (l2) (r2)) = Zipper (l1 ++ r1) (l2 ++ r2)
+
+goLeftToTheEnd :: Zipper a -> Zipper a
+goLeftToTheEnd into = case into of
+                                  Zipper [] _ -> into
+                                  Zipper left right -> goLeftToTheEnd (goLeft into)
+
+insertFromBeginning :: Int -> Zipper a -> Zipper a -> Zipper a
+insertFromBeginning index what into | index /= 0 = insertFromBeginning (index - 1) what (goRight into)
+                                    | otherwise = case (into, what) of
+                                                    ((Zipper left right),(Zipper empty full)) ->  Zipper (left) (full ++ right)
 
 insertManyAt :: Int -> Zipper a -> Zipper a -> Zipper a
-insertManyAt index what into = todo
+insertManyAt index what into = insertFromBeginning index (goLeftToTheEnd what) (goLeftToTheEnd into)
+
+getSubZipper from to (Zipper left right) = Zipper [] (take (to - from) (drop from (right)))
 
 subZipper :: Int -> Int -> Zipper a -> Zipper a
-subZipper from to input = todo
+subZipper from to input = getSubZipper from to (goLeftToTheEnd input)
