@@ -32,12 +32,36 @@ list2dlist' left (h: t) =
     in rec
 
 
+
+
 -- Реализуйте функции индексирования, вставки и удаления элементов
+
+dlist2list :: DList a -> [a]
+dlist2list DNil = []
+dlist2list (DCons left h right) = concat [[h], dlist2list right]
+
+test = DCons (DNil) (1) (DNil)
+
 index :: DList a -> Int -> a
-index = todo
+index _ i | i < 0 = error "index is less than zero"
+index (DCons left h right) ind  | ind /= 0 = index (right) (ind - 1)
+                                | ind == 0 = h
 
 insertAt :: DList a -> Int -> a -> DList a
-insertAt list index value = todo
+insertAt _ i _ | i < 0 = error "index is less than zero"
+insertAt (DCons left h right) index value | index /= 0 = (DCons left h (insertAt right (index - 1) value))
+                                          | index == 0 = DCons left value (list2dlist (h : dlist2list right))
 
+getList lst = (tail (dlist2list lst))
 removeAt :: DList a -> Int -> DList a
-removeAt list index = todo
+removeAt _ i | i < 0 = error "index is less than zero"
+
+removeAt (DCons left h (DCons left1 v DNil)) index | index /= 1 = error "error out of bounds"
+                                                   | index == 1 = (DCons left h DNil)
+
+
+removeAt (DCons left h right) index | index /= 0 = (DCons left h (removeAt right (index-1)))
+                                    | index == 0 = (DCons left firstRight otherRight)
+                                    where
+                                      firstRight = head (dlist2list right)
+                                      otherRight = list2dlist (tail (dlist2list right))
